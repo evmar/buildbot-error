@@ -1,0 +1,15 @@
+{
+  "name": "BuildBot Error",
+  "version": "1.0",
+  "description": "Skip through errors in buildbot output.",
+  "content_scripts": [
+    {
+      "matches": ["http://build.chromium.org/buildbot/waterfall/builders/*"],
+      "js": ["nexterror.js"]
+    }
+  ],
+  "icons": {
+    "48": "48.png",
+    "128": "128.png"
+  }
+}

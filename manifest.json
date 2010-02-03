@@ -4,7 +4,7 @@
   "description": "Skip through errors in buildbot output.",
   "content_scripts": [
     {
-      "matches": ["http://build.chromium.org/buildbot/waterfall/builders/*"],
+      "matches": ["http://build.chromium.org/buildbot/waterfall/builders/*/compile/logs/stdio"],
       "js": ["nexterror.js"]
     }
   ],

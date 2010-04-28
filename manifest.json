@@ -1,11 +1,14 @@
 {
   "name": "BuildBot Error",
-  "version": "1.4",
+  "version": "1.5",
   "description": "Skip through errors in buildbot output.",
   "content_scripts": [
     {
-      "matches": ["http://build.chromium.org/buildbot/waterfall/builders/*/compile/logs/stdio"],
-      "matches": ["http://build.chromium.org/buildbot/*/builders/*/compile/logs/stdio"],
+      "matches": [
+        "http://build.chromium.org/buildbot/*/builders/*/compile/logs/stdio",
+        "http://chrome-tryserver/builders/*/compile/logs/stdio",
+        "http://chrome-buildbot/builders/*/compile/logs/stdio"
+      ],
       "js": ["nexterror.js"]
     }
   ],

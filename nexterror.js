@@ -6,15 +6,16 @@ function doParse() {
   var spans = document.getElementsByTagName('span');
   // /.../dtoa/dtoa.c:2550: warning: comparison between signed and unsigned
   var kGCCErrorRE = new RegExp('^[^ :]+:\\d+: ', 'gm');
-  var kPathRE = new RegExp('^/b/slave/(mac|linux|linux_view)/build/src(.*)$', 'gm');
+  var kPathRE = new RegExp('^/b/slave/(mac|linux|linux_view)/build/src/(.*)$', 'gm');
   var kPathWinRE = new RegExp('[a-zA-Z]:\\\\b\\\\slave\\\\([^\\\\]*)\\\\build\\\\src\\\\(.*)$', 'gm');
+  var kMakeRE = new RegExp('^(make: \\*\\*\\* .* Error.*)', 'gm');
   for (var i = 0; i < spans.length; ++i) {
     var span = spans[i];
     if (span.innerHTML.match('error:') ||  // Mac style.
         span.innerHTML.match('error C[0-9][0-9][0-9][0-9]') ||  // Windows style.
         span.innerHTML.match(kGCCErrorRE)) {
       span.innerHTML = span.innerHTML.replace(kPathRE, '...<b>$2</b>');
-      span.innerHTML = span.innerHTML.replace(kPathWinRE, '...\\<b>$2</b>');
+      span.innerHTML = span.innerHTML.replace(kPathWinRE, '...<b>$2</b>');
       while (true) {
         // Don't use createElement/insertBefore because the error message could be in
         // in the middle of a large span, and we want the anchor right here.
@@ -39,6 +40,20 @@ function doParse() {
         }
 
         // If we get here, there's nothing left to replace.
+        break;
+      }
+    }
+    if (span.innerHTML.match(kMakeRE)) {
+      span.innerHTML = span.innerHTML.replace(kPathWinRE, '...<b>$2</b>');
+      while (true) {
+        var length = span.innerHTML.length;
+        span.innerHTML = span.innerHTML.replace(kMakeRE,
+                                                '<a name=error' + next_error + '></a>' +
+                                                '<font color=red>$1</font>');
+        if (span.innerHTML.length != length) {
+          ++next_error;
+          continue;
+        }
         break;
       }
     }

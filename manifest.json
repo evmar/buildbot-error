@@ -10,6 +10,14 @@
         "http://chrome-buildbot/builders/*/compile/logs/stdio"
       ],
       "js": ["nexterror.js"]
+    },
+    {
+      "matches": [
+        "http://build.chromium.org/buildbot/*/builders/*_tests/logs/stdio*",
+        "http://chrome-tryserver/builders/*/*_tests/logs/stdio*",
+        "http://chrome-buildbot/builders/*/*_tests/logs/stdio*"
+      ],
+      "js": ["gtest.js"]
     }
   ],
   "icons": {

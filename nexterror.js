@@ -12,7 +12,7 @@ function doParse() {
   for (var i = 0; i < spans.length; ++i) {
     var span = spans[i];
     if (span.innerHTML.match('error:') ||  // Mac style.
-        span.innerHTML.match('error C[0-9][0-9][0-9][0-9]') ||  // Windows style.
+        span.innerHTML.match('error (C|LNK)[0-9][0-9][0-9][0-9]') ||  // Windows style.
         span.innerHTML.match(kGCCErrorRE)) {
       span.innerHTML = span.innerHTML.replace(kPathRE, '...<b>$2</b>');
       span.innerHTML = span.innerHTML.replace(kPathWinRE, '...<b>$2</b>');
@@ -23,7 +23,7 @@ function doParse() {
         // We insert an anchor before the error message and if we don't exclude
         // errors/warnings with </a> in front this will loop forever, trying to
         // insert the anchor tag. Hence the [^>] at the front of the regexp.
-        span.innerHTML = span.innerHTML.replace(/[^>](error:|error C[0-9][0-9][0-9][0-9])/,
+        span.innerHTML = span.innerHTML.replace(/[^>](error:|error (C|LNK)[0-9][0-9][0-9][0-9])/,
                                                 '<a name=error' + next_error + '></a>' +
                                                 '<font color=red>$1</font>');
         if (span.innerHTML.length != length) {

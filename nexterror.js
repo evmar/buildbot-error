@@ -61,6 +61,24 @@ function doParse() {
   errorcount = next_error - 1;
 }
 
+function doSanitize() {
+  var kSanitizeREs = [
+    [ /^[0-9]+&gt;/gm, '' ],
+    [ /^(distcc.*)|(Check dependencies.*)|(    setenv .*)|(    cd .*)|(make: Nothing to be done.*)|(    \/Developer\/usr\/bin\/.*)|(    \/Developer\/Library\/PrivateFrameworks\/DevToolsCore.framework.*)|(    \/Developer\/Library\/Xcode\/Plug-ins\/CoreBuildTasks.xcplugin\/.*)|(python scripts\/rule_binding.py.*)|(The operation completed successfully\.)$/gm, '' ],
+    [ /^Distributed-CompileC (.*) normal i386 c\+\+ com\.apple\.compilers\.gcc\.4_2.*$/gm, '    CC $1' ],
+    [ /^CompileC (.*) normal i386 c\+\+ com\.apple\.compilers\.gcc\.4_2.*$/gm, '    CC $1' ],
+  ];
+
+  var spans = document.getElementsByTagName('span');
+  for (var i = 0; i < spans.length; ++i) {
+    var span = spans[i];
+    for (var j = 0; j < kSanitizeREs.length; ++j) {
+      span.innerHTML = span.innerHTML.replace(kSanitizeREs[j][0], kSanitizeREs[j][1]);
+    }
+    // Clean up any extra spurrious newlines introduced by the substitutions.
+    span.innerHTML = span.innerHTML.replace(/^\s*$[\n\r]{1,}/gm, '');
+  }
+}
 
 // Returns the one-based index of current error.
 function currentIndex() {
@@ -88,16 +106,25 @@ function nextError() {
   document.getElementById('nextErrorButton').value = buttonLabel(index);
 }
 
+function createButton(id, label, handler) {
+  var button = document.createElement('input');
+  button.id = id;
+  button.type = 'submit';
+  button.value = label;
+  button.style.cssFloat = 'right';
+  button.onclick = handler;
+  return button;
+}
+
 doParse();
 
-// Construct the button and show it.
-var next = document.createElement('input');
-next.id = 'nextErrorButton';
-next.type = 'submit';
-next.value = buttonLabel(currentIndex());
-next.style.position = 'fixed';
-next.style.right = 0;
-next.style.top = 0;
-next.onclick = nextError;
-document.body.appendChild(next);
+var div = document.createElement('div');
+div.style.position = 'fixed';
+div.style.right = 0;
+div.style.top = 0;
+
+div.appendChild(createButton('sanitizeButton', 'Sanitize log', doSanitize));
+div.appendChild(createButton('nextErrorButton', buttonLabel(currentIndex()), nextError));
+
+document.body.appendChild(div);
 

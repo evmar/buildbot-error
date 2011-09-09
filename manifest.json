@@ -5,13 +5,13 @@
   "content_scripts": [
     {
       "matches": [
-        "http://build.chromium.org/p/*/builders/*/compile/logs/stdio"
+        "http://*/*/builders/*/builds/*/steps/*compile/logs/stdio*"
       ],
       "js": ["nexterror.js"]
     },
     {
       "matches": [
-        "http://build.chromium.org/p/*/builders/*tests/logs/stdio*"
+        "http://*/*/builders/*/builds/*/steps/*/logs/stdio*"
       ],
       "js": ["gtest.js"]
     }

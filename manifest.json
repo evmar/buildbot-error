@@ -1,6 +1,6 @@
 {
   "name": "BuildBot Error",
-  "version": "7",
+  "version": "8",
   "description": "Skip through errors in buildbot output.",
   "content_scripts": [
     {

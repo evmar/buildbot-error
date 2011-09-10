@@ -5,13 +5,15 @@
   "content_scripts": [
     {
       "matches": [
-        "http://*/*/builders/*/builds/*/steps/*compile/logs/stdio*"
+        "http://build.chromium.org/*/builders/*/builds/*/steps/*compile*/logs/stdio*",
+        "http://*.corp.google.com/*/builders/*/builds/*/steps/*compile*/logs/stdio*"
       ],
       "js": ["nexterror.js"]
     },
     {
       "matches": [
-        "http://*/*/builders/*/builds/*/steps/*/logs/stdio*"
+        "http://build.chromium.org/*/builders/*/builds/*/steps/*/logs/stdio*",
+        "http://*.corp.google.com/*/builders/*/builds/*/steps/*/logs/stdio*"
       ],
       "js": ["gtest.js"]
     }
